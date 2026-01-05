@@ -1,0 +1,21 @@
+class Solution {
+    public long maxMatrixSum(int[][] matrix) {
+        long total = 0;
+        int minAbs = Integer.MAX_VALUE;
+        int negCount = 0;
+
+        for (int[] row : matrix) {
+            for (int val : row) {
+                if (val < 0) negCount++;
+                total += Math.abs(val);
+                minAbs = Math.min(minAbs, Math.abs(val));
+            }
+        }
+
+        if (negCount % 2 == 0) {
+            return total;
+        } else {
+            return total - 2L * minAbs;
+        }
+    }
+}
