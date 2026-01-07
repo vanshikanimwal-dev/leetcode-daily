@@ -1,0 +1,31 @@
+class Solution {
+    private long totalSum = 0;
+    private long maxProduct = 0;
+    private static final int MOD = 1_000_000_007;
+
+    public int maxProduct(TreeNode root) {
+        totalSum = treeSum(root);
+        computeProduct(root);
+        return (int)(maxProduct % MOD);
+    }
+
+    // First DFS: total sum of tree
+    private long treeSum(TreeNode node) {
+        if (node == null) return 0;
+        return node.val + treeSum(node.left) + treeSum(node.right);
+    }
+
+    // Second DFS: compute max product
+    private long computeProduct(TreeNode node) {
+        if (node == null) return 0;
+
+        long left = computeProduct(node.left);
+        long right = computeProduct(node.right);
+        long subSum = node.val + left + right;
+
+        long product = subSum * (totalSum - subSum);
+        maxProduct = Math.max(maxProduct, product);
+
+        return subSum;
+    }
+}
