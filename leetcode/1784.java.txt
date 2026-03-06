@@ -1,0 +1,21 @@
+class Solution {
+    public boolean checkOnesSegment(String s) {
+
+        boolean foundZero = false;
+
+        for(int i = 0; i < s.length(); i++) {
+
+            // once we see a zero
+            if(s.charAt(i) == '0') {
+                foundZero = true;
+            }
+
+            // if we see 1 again after zero → second segment
+            if(foundZero && s.charAt(i) == '1') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
