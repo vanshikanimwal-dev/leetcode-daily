@@ -1,0 +1,49 @@
+import java.util.*;
+
+class Solution {
+    public List<Integer> solveQueries(int[] nums, int[] queries) {
+        
+        int n = nums.length;
+
+        // Map: value -> list of indices where it appears
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        for(int i = 0; i < n; i++){
+            map.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
+        }
+
+        List<Integer> result = new ArrayList<>();
+
+        for(int q : queries){
+
+            int val = nums[q]; // value at query index
+            List<Integer> list = map.get(val);
+
+            // If only one occurrence → no other same element
+            if(list.size() == 1){
+                result.add(-1);
+                continue;
+            }
+
+            // Binary search to find current index position in list
+            int idx = Collections.binarySearch(list, q);
+
+            int m = list.size();
+
+            // Previous same index (circular)
+            int prev = list.get((idx - 1 + m) % m);
+
+            // Next same index (circular)
+            int next = list.get((idx + 1) % m);
+
+            // Distance in circular array
+            int distPrev = Math.min(Math.abs(q - prev), n - Math.abs(q - prev));
+            int distNext = Math.min(Math.abs(q - next), n - Math.abs(q - next));
+
+            // Take minimum
+            result.add(Math.min(distPrev, distNext));
+        }
+
+        return result;
+    }
+}
